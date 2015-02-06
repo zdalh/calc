@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>hello world</title>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="js/main.js" ></script>
+		<script type="text/javascript">
+			function CalcLoan() {
+				var amount = $('#inputAmount').val() * 1.0 * 10000;
+				var type = $("input[name='rdType']:checked").val() * 1.0;
+				var years = $("select#selectedYears option:selected").val() * 1.0;
+				var rateOfYear = ($("select#selectedRate option:selected").val() * 1.0) / 100;
+				var payMethod = $("input[name='rdPayMethod']:checked").val() * 1.0;
+				var loanCalc = new LoanCalc2();
+				if(payMethod == 0){
+					var perMonth = loanCalc.calcLoanSameInterestAndPrincipal(amount, years * 12, rateOfYear / 12.0)
+					$("#perMonth").val(perMonth);
+				}else{
+					var everyMonth = loanCalc.calcLoanSamePrincipal(amount,years * 12,rateOfYear / 12);
+					for(var i=0;i<everyMonth.length;i++){
+						console.log(everyMonth[i]);	
+					}
+					
+				}
+			}
+			document.addEventListener('plusready', function() {
+				alert("welcome to Html5plus!");
+			});
+		</script>
+		<link rel="stylesheet" href="css/common.css" />
+		<style type="text/css">
+			li {
+		    		list-style-type: none;
+		    	}
+		    	
+		    	.itemUl > li{
+		    		float: left;
+		    	}
+		    	
+		    	.clearLi {
+		    		clear: both;
+		    	}
+		</style>
+	</head>
+
+	<body>
+		<ul class='rootUl'>
+			<li class='liLabel'>贷款金额</li>
+			<li class='liInput'>
+				<input id="inputAmount" type='number' max="5000" min="5" />万 </li>
+			<li class='liInput'>
+				<ul class='itemUl'>
+					<li>
+						<input name="rdType" type="radio" />商贷</li>
+					<li>
+						<input name="rdType" type="radio" checked="true" />公积金</li>
+					<li>
+						<input name="rdType" type="radio" />组合</li>
+				</ul>
+			</li>
+			<li class='clearLi'></li>
+			<li class='liLabel'>贷款年限</li>
+			<li class='liInput'>
+				<select id="selectedYears">
+					<option>5</option>
+					<option>10</option>
+					<option>15</option>
+					<option selected="true">20</option>
+					<option>30</option>
+				</select>
+			</li>
+			<li class='liLabel'>年利率</li>
+			<li class='liInput'>
+				<select id="selectedRate">
+					<option>5.55</option>
+					<option>6.0</option>
+					<option selected="true">5.5675</option>
+				</select>
+			</li>
+			<li class='liLabel'>还款方式</li>
+			<li>
+				<ul class='itemUl'>
+					<li>
+						<input name="rdPayMethod" type="radio" value="0" checked="true" />等额本息</li>
+					<li>
+						<input name="rdPayMethod" type="radio" value="1" />等额本金</li>
+				</ul>
+			</li>
+			<li class='clearLi'></li>
+			<li style="widows: 200; height: 50;">
+				<button value='计算' type="button" style="height: 50;widows: 200;" onclick="CalcLoan()" />
+			</li>
+			<li>
+				<input id="perMonth" type="number" readonly="true" />
+			</li>
+		</ul>
+		
+	</body>
+</html>
